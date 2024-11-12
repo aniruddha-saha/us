@@ -6,7 +6,7 @@
     <title>Color Sliders</title>
     <style>
         body {
-            font-family: garamond, sans-serif;
+            font-family: Arial, sans-serif;
             max-width: 800px;
             margin: 40px auto;
             padding: 20px;
@@ -82,6 +82,12 @@
             const slider = document.getElementById(sliderId);
             const valueDisplay = document.getElementById(valueId);
             
+            // Load saved value from localStorage or use default (50)
+            const savedValue = localStorage.getItem(sliderId);
+            if (savedValue !== null) {
+                slider.value = savedValue;
+            }
+            
             function updateValue() {
                 const value = slider.value;
                 valueDisplay.textContent = `Value: ${value}%`;
@@ -91,10 +97,13 @@
                 const green = Math.round(255 * value / 100);
                 
                 slider.style.background = `linear-gradient(to right, rgb(255,0,0), rgb(${red},${green},0))`;
+                
+                // Save value to localStorage
+                localStorage.setItem(sliderId, value);
             }
             
             slider.addEventListener('input', updateValue);
-            updateValue(); // Initial call to set the gradient
+            updateValue(); // Initial call to set the gradient and value
         }
 
         // Initialize both sliders
